@@ -1,3 +1,5 @@
-from app.core.database import Base
+"""SQLAlchemy models."""
 
-__all__ = ["Base"]
+from app.models.client import Client, ClientStatus
+
+__all__ = ["Client", "ClientStatus"]

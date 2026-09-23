@@ -27,6 +27,8 @@ cp frontend/.env.example frontend/.env.local
 | `ANTHROPIC_API_KEY` | Backend | Reserved; never sent to the frontend |
 | `OPENAI_API_KEY` | Backend | Reserved; never sent to the frontend |
 
+No new environment variables were added for Phase 2 client management.
+
 Do not put provider API keys in frontend env files.
 
 ## Docker
@@ -46,6 +48,7 @@ docker compose up postgres redis -d
 Useful URLs:
 
 - Frontend: http://localhost:3000
+- Clients: http://localhost:3000/clients
 - Backend docs: http://localhost:8000/docs
 - Health: http://localhost:8000/api/v1/health
 
@@ -100,21 +103,33 @@ cd backend
 pytest
 ```
 
-## Database
+## Database migrations
 
 1. Start PostgreSQL with Docker or a local install.
 2. Confirm `DATABASE_URL` in `backend/.env`.
-3. Run the foundational Alembic revision:
+3. Apply migrations:
 
 ```bash
 cd backend
 alembic upgrade head
 ```
 
-Phase 1 does not create business tables. The first revision is a no-op foundation migration.
+Phase 2 adds revision `0002_clients`, which creates the `clients` table and indexes.
+
+### Soft delete decision
+
+Client `DELETE` sets `deleted_at` instead of removing the row. Soft-deleted clients are excluded from list/get endpoints. This preserves audit history and supports future recovery without requiring a separate archive table.
+
+## Client management usage
+
+1. Start Postgres/Redis and apply migrations.
+2. Start the backend and frontend.
+3. Open http://localhost:3000/clients
+4. Use **Add Client** to create a record, then open, edit, or soft-delete from the detail page.
 
 ## Known limitations
 
-- Unimplemented routes show a "Coming in a future phase" state.
+- Presentation, template, agent, and settings routes still show a future-phase placeholder.
+- Dashboard summary metrics remain development placeholders.
 - Database health reports `not_configured` if `DATABASE_URL` is missing, and `error` if the database is unreachable.
 - Redis is pinged when `REDIS_URL` is set; no job workers exist yet.
