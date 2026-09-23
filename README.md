@@ -1,48 +1,52 @@
-# Digital Marketing Automation Platform
+# Abenka AI Marketing Platform
 
-An AI-powered digital marketing automation platform designed to streamline and automate repetitive marketing workflows for agencies and marketing teams.
+An AI-powered marketing operations workspace for Abenka Infotech. Phase 1 delivers the project foundation and master dashboard shell. AI agents, client management, and content generation are not implemented yet.
 
-The platform provides a centralized web dashboard where a new client requirement can be converted into structured marketing deliverables such as **marketing strategies, presentation decks, social media content ideas, campaign plans, and client-ready assets**.
+## Existing repository
 
-## 🎯 Problem
+The repository previously contained product vision notes only. This phase adds the Next.js frontend, FastAPI backend, PostgreSQL/Redis infrastructure, and documentation while preserving that original product direction.
 
-Digital marketing agencies spend significant time collecting client information, researching businesses, preparing strategies, creating presentation decks, planning social media content, and coordinating repetitive marketing tasks.
+## Stack
 
-This project aims to reduce that manual effort by bringing these workflows into a single intelligent platform.
+- Frontend: Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui, Lucide, TanStack Query
+- Backend: Python, FastAPI, SQLAlchemy 2, Pydantic, Alembic
+- Database: PostgreSQL
+- Infrastructure: Docker Compose, Redis (reserved for future background jobs)
 
-## 🚀 Key Objectives
+## Project structure
 
-* Automate new client onboarding and requirement collection
-* Generate structured marketing strategies
-* Automate client presentation/deck creation
-* Generate social media content ideas and calendars
-* Assist with campaign planning
-* Maintain reusable marketing templates
-* Centralize client information and project workflows
-* Reduce repetitive manual work for marketing teams
-* Create scalable and standardized marketing processes
+```
+frontend/          Next.js application
+backend/           FastAPI application
+docs/              Architecture and setup notes
+prompts/           Reserved for future agent prompts
+templates/         Reserved for future marketing templates
+clients/           Reserved for future client working files
+docker-compose.yml Development services
+```
 
-## 🏗️ Planned Workflow
+## Quick start
 
-**New Client → Client Information → Business Analysis → Marketing Strategy → Content & Campaign Planning → Presentation Deck → Review → Client Delivery**
+See [docs/setup.md](docs/setup.md) for local and Docker commands.
 
-## 💡 Vision
+```bash
+cp .env.example .env
+docker compose up postgres redis -d
+cd backend && python -m venv .venv && .venv\Scripts\activate && pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+cd frontend && npm install && npm run dev
+```
 
-The long-term goal is to build an **AI-powered digital marketing operating system** that enables marketing teams to manage multiple clients and generate high-quality marketing deliverables faster, while maintaining consistency, customization, and scalability.
+Health check: `http://localhost:8000/api/v1/health`
 
-## 🛠️ Version 1
+Dashboard: `http://localhost:3000/dashboard`
 
-The first version focuses on a **web-based dashboard for automating presentation deck creation**, allowing the marketing team to enter client requirements and generate a structured, client-ready marketing presentation.
+## Known limitations
 
-Future versions will expand into:
+- Client, presentation, template, agent, and settings workflows are placeholders.
+- No business tables, authentication, or AI provider calls yet.
+- Dashboard metrics are development placeholders set to zero.
 
-* Social media automation
-* AI content generation
-* Reel/video concept generation
-* SEO workflows
-* Google & Meta Ads planning
-* CRM integration
-* Email marketing automation
-* Client reporting and analytics
-* AI marketing agents
-* Multi-client workspace management
+## License
+
+Internal project for Abenka Infotech.
